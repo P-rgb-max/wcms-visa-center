@@ -2,7 +2,7 @@
 global $Wcms;
 
 if (defined('VERSION')) {
-	$Wcms->addListener('admin', 'visioning')
+	$Wcms->addListener('settings', 'visioning')
 }
 
 function visioning($args) {
@@ -12,7 +12,13 @@ function visioning($args) {
 		return $args;
 	}
 	
-	$args[0] .= '<form action="' . $Wcms->asset('save.php') . '" method="post"><input type="text" name="visa" placeholder="Enter visa center type"><submit value="Save it"></form>';
+	// Search and insert before "<p class='subTitle'>Menu</p>"
+	$search  = '<p class="subTitle">Menu</p>';
+	$field   = '<p class="subTitle">Visa Center Name</p>';
+	$field  .= '<div data-target="config" id="centerName" class="editText">' . $Wcms->get('config', 'centerName') . '</div>';
+	$field  .= $search;
+	$result  = preg_replace($search, '', $args[0]);
+	$args[0] = $result;
 	
 	return $args;
 }
